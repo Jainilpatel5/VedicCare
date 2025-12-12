@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VedicCare — UI Prototype</title>
+  <link rel="stylesheet" href="vediccare.css" />
+</head>
+<body>
+  <header class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">VC</div>
+        <div>
+          <div style="font-weight:700">VedicCare</div>
+          <div style="font-size:12px;color:var(--muted)">Telehealth • Video • Voice • Chat</div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <button onclick="navTo('home')" class="btn-ghost">Home</button>
+        <button onclick="navTo('doctors')" class="btn-ghost">Find Doctors</button>
+        <button onclick="navTo('blog')" class="btn-ghost">Resources</button>
+        <button onclick="navTo('faq')" class="btn-ghost">FAQ</button>
+        <button class="btn-primary2" id="getStartedBtn" onclick="openSignup()">Get Started</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- --- Home / Landing --- -->
+    <section id="page-home">
+      <div class="hero">
+        <div class="hero-card">
+          <h1 style="font-size:26px">Quality healthcare — from anywhere</h1>
+          <p class="muted">Video, voice or chat consults with licensed doctors. E-prescriptions, follow-ups and secure records.</p>
+
+          <div class="search-row">
+            <input id="searchInput" placeholder="Search doctor, specialty or symptom" />
+            <select id="searchSpecialty">
+              <option value="">All specialties</option>
+            </select>
+            <button class="btn-primary" onclick="searchDoctors()">Find a Doctor</button>
+          </div>
+
+          <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+            <div class="stat">
+              <div style="font-size:12px;color:var(--muted)">Licensed Doctors</div>
+              <div style="font-weight:700">1,254+</div>
+            </div>
+            <div class="stat">
+              <div style="font-size:12px;color:var(--muted)">Consults completed</div>
+              <div style="font-weight:700">82,430</div>
+            </div>
+            <div class="stat">
+              <div style="font-size:12px;color:var(--muted)">Average rating</div>
+              <div style="font-weight:700">4.8 ★</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+            <button class="btn-primary" onclick="navTo('signup')">Create Account</button>
+            <button class="btn-ghost" onclick="navTo('contact')">Contact Sales</button>
+          </div>
+
+        </div>
+
+        <aside>
+          <div class="card">
+            <h3>How it works</h3>
+            <ol style="padding-left:18px;margin-top:8px">
+              <li>Search and pick a doctor</li>
+              <li>Book a slot or start instant consult</li>
+              <li>Get e-prescription & follow up</li>
+            </ol>
+            <hr style="margin:12px 0"/>
+            <h4 style="margin-bottom:6px">Popular specialties</h4>
+            <div class="grid" style="grid-template-columns:1fr 1fr">
+              <div class="pill">General Physician</div>
+              <div class="pill">Pediatrics</div>
+              <div class="pill">Dermatology</div>
+              <div class="pill">Gynecology</div>
+            </div>
+          </div>
+
+          <div style="height:18px"></div>
+
+          <div class="card">
+            <h4>Trust & Security</h4>
+            <p class="muted">All consultations are private, encrypted and doctors are verified with license checks.</p>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+              <div class="badge">Verified Doctors</div>
+              <div class="badge" style="background:var(--teal)">Encrypted Calls</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div style="margin-top:22px">
+        <h2>Services we offer</h2>
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <h3>Tele-consultation</h3>
+            <p class="muted">Secure video, voice and chat-based consults with real doctors.</p>
+          </div>
+          <div class="card">
+            <h3>E-prescriptions</h3>
+            <p class="muted">Receive prescriptions directly in your patient account.</p>
+          </div>
+          <div class="card">
+            <h3>Chronic care & follow-ups</h3>
+            <p class="muted">Schedule follow-ups and maintain a care plan.</p>
+          </div>
+          <div class="card">
+            <h3>In-person (Partner Clinics)</h3>
+            <p class="muted">Book with partner clinics for physical exams when required.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- --- Doctors Listing --- -->
+    <section id="page-doctors" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>Find a Doctor</h2>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="filters" id="filterChips"></div>
+          <button class="btn-primary" onclick="navTo('signup')">Sign up to book</button>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;display:grid;grid-template-columns:320px 1fr;gap:18px">
+        <aside>
+          <div class="card">
+            <h4>Filter</h4>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px">
+              <select id="filterSpecialty">
+                <option value="">All specialties</option>
+              </select>
+              <select id="filterLanguage">
+                <option value="">Any language</option>
+                <option>English</option>
+                <option>Hindi</option>
+                <option>Gujarati</option>
+              </select>
+              <input id="filterFee" placeholder="Max fee (₹)" />
+              <button class="btn-primary" onclick="applyFilters()">Apply</button>
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h4>Sort</h4>
+            <select id="sortBy" onchange="renderDoctors()">
+              <option value="relevance">Relevance</option>
+              <option value="rating">Rating</option>
+              <option value="fee_low">Fee: Low to High</option>
+              <option value="fee_high">Fee: High to Low</option>
+            </select>
+          </div>
+        </aside>
+
+        <div>
+          <div id="doctorsList" class="compact-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Doctor Profile --- -->
+    <section id="page-profile" class="hidden">
+      <div class="card profile-hero">
+        <div style="display:flex;gap:14px;align-items:center">
+          <div class="avatar" id="profileAvatar">AK</div>
+        </div>
+        <div class="profile-right">
+          <h2 id="profileName">Dr. A. Kothari</h2>
+          <div class="muted" id="profileSpecs">General Physician • 12 yrs exp • English, Hindi</div>
+          <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+            <div class="badge">Verified</div>
+            <div class="rating">4.9 ★ <span class="muted">(1.2k reviews)</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div style="font-weight:700;font-size:18px">₹499</div>
+          <button class="btn-primary" onclick="openBookingModal()">Book Appointment</button>
+          <button class="btn-ghost" onclick="startInstantConsult()">Start Instant Consult</button>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;display:grid;grid-template-columns:2fr 1fr;gap:16px">
+        <div>
+          <div class="card">
+            <h3>About</h3>
+            <p class="muted" id="profileAbout">Experienced physician who focuses on patient-centered care. Special interest in preventive medicine and chronic disease management.</p>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h3>Patient reviews</h3>
+            <div id="profileReviews"></div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4>Available slots</h4>
+            <div class="availability" id="profileSlots"></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h4>Credentials</h4>
+            <div class="muted">MD (General Medicine), MBBS — Registered with Medical Council (ID: 12345)</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- --- Signup / Login (simple modal pages) --->
+    <section id="page-signup" class="hidden">
+      <div class="card">
+        <h2>Create your account</h2>
+        <p class="muted">Choose role and sign up to book or manage appointments.</p>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <button class="btn-primary" onclick="openModal('signupPatient')">Sign up as Patient</button>
+          <button class="btn-ghost" onclick="openModal('signupDoctor')">Sign up as Doctor</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Patient Dashboard (example) --->
+    <section id="page-dashboard-patient" class="hidden">
+      <h2>Patient Dashboard</h2>
+      <div class="two-col" style="margin-top:12px">
+        <div>
+          <div class="card">
+            <h3>Upcoming appointments</h3>
+            <div id="patientUpcoming"></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h3>Medical records</h3>
+            <div class="muted">No records yet. After your first consult, prescriptions and reports will appear here.</div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4>Payments</h4>
+            <div class="muted">Wallet balance: ₹0</div>
+            <div style="margin-top:10px"><button class="btn-primary">Add Money</button></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h4>Notifications</h4>
+            <div class="muted">No new notifications</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- --- Doctor Dashboard (example) --->
+    <section id="page-dashboard-doctor" class="hidden">
+      <h2>Doctor Dashboard</h2>
+      <div class="two-col" style="margin-top:12px">
+        <div>
+          <div class="card">
+            <h3>Today's schedule</h3>
+            <div id="doctorSchedule"></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="card">
+            <h3>Patient queue</h3>
+            <div class="muted">No waiting patients.</div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4>Earnings (This month)</h4>
+            <div style="font-weight:700">₹24,650</div>
+            <div style="margin-top:10px"><button class="btn-primary">Payout Settings</button></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- --- Admin Panel (skeleton) --->
+    <section id="page-admin" class="hidden">
+      <h2>Admin Dashboard</h2>
+      <div style="margin-top:12px">
+        <div class="card">
+          <h3>Platform metrics</h3>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <div class="card" style="padding:12px"><div class="muted">Doctors</div><div style="font-weight:700">1,254</div></div>
+            <div class="card" style="padding:12px"><div class="muted">Patients</div><div style="font-weight:700">52,340</div></div>
+            <div class="card" style="padding:12px"><div class="muted">Active today</div><div style="font-weight:700">2,430</div></div>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+          <h3>User management</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Role</th><th>Joined</th><th>Action</th></tr></thead>
+            <tbody id="adminUsers"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Blog / Resources --->
+    <section id="page-blog" class="hidden">
+      <h2>Health resources</h2>
+      <div style="margin-top:12px" class="grid">
+        <div class="card"><h3>Keeping your heart healthy</h3><p class="muted">Quick tips and lifestyle changes to reduce cardiovascular risk.</p></div>
+        <div class="card"><h3>Managing diabetes</h3><p class="muted">How to check blood sugar and manage diet and meds.</p></div>
+        <div class="card"><h3>Mental health: when to seek help</h3><p class="muted">Recognize warning signs and available resources.</p></div>
+      </div>
+    </section>
+
+    <!-- --- FAQ --->
+    <section id="page-faq" class="hidden">
+      <div class="card">
+        <h2>Frequently asked questions</h2>
+        <div style="margin-top:8px">
+          <h4>How do video consults work?</h4>
+          <p class="muted">Once you book, the doctor will call you from the app or a secure link. You can use camera or voice only.</p>
+          <h4>Can doctors prescribe medicines?</h4>
+          <p class="muted">Yes — registered doctors can issue e-prescriptions after a consultation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- Contact --->
+    <section id="page-contact" class="hidden">
+      <div class="card">
+        <h2>Contact & Support</h2>
+        <p class="muted">For enquiries, partnerships or support reach us on support@vediccare.example or use the form below.</p>
+        <div style="margin-top:12px;display:grid;grid-template-columns:1fr 320px;gap:12px">
+          <div>
+            <input placeholder="Your name" style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)" />
+            <input placeholder="Email" style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)" />
+            <textarea placeholder="Message" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)" rows="5"></textarea>
+            <div style="margin-top:8px"><button class="btn-primary">Send message</button></div>
+          </div>
+
+          <aside class="card">
+            <h4>Office</h4>
+            <p class="muted">Mumbai, India • support@vediccare.example</p>
+            <h4 style="margin-top:10px">Support hours</h4>
+            <p class="muted">Mon-Fri, 9:00 - 18:00</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div class="muted">© VedicCare 2025</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="#" onclick="navTo('faq')">Privacy</a>
+        <a href="#" onclick="navTo('contact')">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal placeholders -->
+  <div id="modalRoot" class="hidden"></div>
+
+  <script src="vediccare.js"></script>
+</body>
+</html>
