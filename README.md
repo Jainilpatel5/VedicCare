@@ -1,0 +1,2 @@
+# VedicCare
+VedicCare is a telehealth platform prototype, developed using HTML, CSS, and JavaScript, provides a basic interface for patients to connect with doctors online. HTML is used to structure key pages such as doctor profiles and appointment booking, while CSS creates a clean and user-friendly design. JavaScript adds interactivity, allowing smooth navigation and basic simulation of telehealth features. Together, these technologies help demonstrate how an online healthcare service can function through a web-based platform.
